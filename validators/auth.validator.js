@@ -36,3 +36,9 @@ export const loginSchema = z.object({
       .trim(),
   }),
 });
+
+export const diskonSchema = z.object({
+  body: z.object({
+    
+  })
+})

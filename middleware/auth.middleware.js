@@ -30,3 +30,22 @@ export const verifikasiToken = (req, res, next) => {
     }); //apabila token tidak valid maka akan return json dan status 403
   }
 };
+
+export const validate = (schema) => {
+  try {
+    schema.parse({
+      body: req.body, //disini kita akan memvalidasi req.body dengan menggunakan schema yang sudah kita buat dengan zod, sehingga kita bisa memastikan bahwa data yang dikirim oleh client sesuai dengan yang kita harapkan, dan juga agar bisa di maintenance kedepannya, sehingga apabila ada perubahan pada data yang dikirim oleh client, kita hanya perlu mengubahnya di satu tempat saja yaitu di schema yang sudah kita buat dengan zod, sehingga lebih efisien dan mudah untuk di maintenance kedepannya
+      query: req.query, //disini kita akan memvalidasi req.query dengan menggunakan schema yang sudah kita buat dengan zod, sehingga kita bisa memastikan bahwa data yang dikirim oleh client sesuai dengan yang kita harapkan, dan juga agar bisa di maintenance kedepannya, sehingga apabila ada perubahan pada data yang dikirim oleh client, kita hanya perlu mengubahnya di satu tempat saja yaitu di schema yang sudah kita buat dengan zod, sehingga lebih efisien dan mudah untuk di maintenance kedepannya
+      params: req.params, //disini kita akan memvalidasi req.params dengan menggunakan schema yang sudah kita buat dengan zod, sehingga kita bisa memastikan bahwa data yang dikirim oleh client sesuai dengan yang kita harapkan, dan juga agar bisa di maintenance kedepannya, sehingga apabila ada perubahan pada data yang dikirim oleh client, kita hanya perlu mengubahnya di satu tempat saja yaitu di schema yang sudah kita buat dengan zod, sehingga lebih efisien dan mudah untuk di maintenance kedepannya
+    });
+    next(); //disini kita akan melanjutkan ke middleware atau route handler selanjutnya
+  } catch (error) {
+    const errorMessage = error.errors.map((err) => err.message);
+
+    return res.status(400).json({
+      success: false,
+      code: "VALIDATION_ERROR",
+      message: errorMessage,
+    });
+  }
+};
